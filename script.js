@@ -1,3 +1,21 @@
+const clear = document.querySelector('.empty-cart');
+const apiURL = 'https://api.mercadolibre.com/sites/MLB/search?q=computador';
+const list = document.querySelector('.cart__items');
+const totalPrice = document.querySelector('.total-price');
+
+// requisito 7
+
+const loading = () => {
+  const loadingDiv = document.createElement('div');
+  loadingDiv.className = 'loading';
+  loadingDiv.innerHTML = 'loading...';
+  document.querySelector('body').appendChild(loadingDiv);
+};
+
+const loadingFinished = () => {
+  document.querySelector('body').removeChild(document.querySelector('.loading'));
+};
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -40,4 +58,28 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-window.onload = () => { };
+// requisito 4 função storage salva o carrinho no localStorage
+// e função starting recupera o localStorage
+
+const storage = () => {
+  localStorage.setItem('checkout', list.innerHTML);
+};
+
+const starting = () => {
+  list.innerHTML = localStorage.getItem('checkout');
+  list.addEventListener('click', cartItemClickListener);
+};
+
+// requisito 6 botão de limpar carrinho
+
+const clearCart = () => {
+  clear.addEventListener('click', () => {
+    list.forEach((element) => list.removeChild(element));
+    storage();
+  });
+};
+
+window.onload = () => {
+  starting();
+  clearCart();
+};
