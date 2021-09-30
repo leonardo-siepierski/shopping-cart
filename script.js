@@ -1,20 +1,4 @@
-const clear = document.querySelector('.empty-cart');
-const apiURL = 'https://api.mercadolibre.com/sites/MLB/search?q=computador';
 const list = document.querySelector('.cart__items');
-const totalPrice = document.querySelector('.total-price');
-
-// requisito 7
-
-const loading = () => {
-  const loadingDiv = document.createElement('div');
-  loadingDiv.className = 'loading';
-  loadingDiv.innerHTML = 'loading...';
-  document.querySelector('body').appendChild(loadingDiv);
-};
-
-const loadingFinished = () => {
-  document.querySelector('body').removeChild(document.querySelector('.loading'));
-};
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -33,12 +17,10 @@ function createCustomElement(element, className, innerText) {
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
   section.className = 'item';
-
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
   return section;
 }
 
@@ -46,8 +28,47 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+// requisito 4
+
+function save() {
+  localStorage.setItem('checkout', document.querySelector('ol').innerHTML);
+}
+
+function recover() {
+  localStorage.getItem('checkout', document.querySelector('ol').innerHTML);
+}
+
+// requisito 5
+// repositório que me ajudou a realizar esse requisito: https://github.com/tryber/sd-015-a-project-shopping-cart/pull/94/files
+
+const sumFunction = () => {
+  let sum = 0;
+  document.querySelectorAll('li').forEach((e) => {
+    sum += parseFloat(e.innerText.split('$').pop());
+  });
+  return sum.toFixed(2);
+};
+
+const returnSum = () => {
+  document.querySelector('.total-price').innerText = sumFunction();
+};
+
+// requisito 6
+
+const clearCart = () => {
+  document.querySelector('.empty-cart').addEventListener('click', () => {
+    list.innerHTML = '';
+    save();
+    returnSum();
+  });
+};
+
+// requisito 3
+
 function cartItemClickListener(event) {
-  // coloque seu código aqui
+  event.target.remove();
+  save();
+  returnSum();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -58,28 +79,19 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-// requisito 4 função storage salva o carrinho no localStorage
-// e função starting recupera o localStorage
+// requisito 7
 
-const storage = () => {
-  localStorage.setItem('checkout', list.innerHTML);
+const loading = () => {
+  const loadingDiv = document.createElement('div');
+  loadingDiv.className = 'loading';
+  loadingDiv.innerHTML = 'loading...';
+  document.querySelector('body').appendChild(loadingDiv);
 };
 
-const starting = () => {
-  list.innerHTML = localStorage.getItem('checkout');
-  list.addEventListener('click', cartItemClickListener);
-};
-
-// requisito 6 botão de limpar carrinho
-
-const clearCart = () => {
-  clear.addEventListener('click', () => {
-    list.forEach((element) => list.removeChild(element));
-    storage();
-  });
-};
+const removeLoading = () => document.querySelector('.loading').remove();
 
 window.onload = () => {
-  starting();
+  sumFunction();
+  returnSum();
   clearCart();
 };
