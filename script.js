@@ -143,3 +143,8 @@ window.onload = () => {
   printSum();
   clearCart();
 };
+
+// repositórios que me ajudaram na realização do projeto:
+// https://github.com/tryber/sd-015-a-project-shopping-cart/pull/94/files
+// https://github.com/tryber/sd-015-a-project-shopping-cart/pull/99/files
+// https://github.com/tryber/sd-015-a-project-shopping-cart/pull/71/files
