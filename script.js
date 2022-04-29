@@ -26,8 +26,6 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-// requisito 5 soma
-
 const sumFunction = () => {
   let sum = 0;
   document.querySelectorAll('li').forEach((element) => {
@@ -36,17 +34,11 @@ const sumFunction = () => {
   return parseFloat(sum.toFixed(2));
 };
 
-// requisito 5 imprime total da soma
-
 const printSum = () => {
   document.querySelector('.total-price').innerText = sumFunction();
 };
 
-// requisito 4 salva no local storage
-
 const save = () => localStorage.setItem('cart', document.querySelector('ol').innerHTML);
-
-// requisito 3 remove item do carrinho
 
 function cartItemClickListener(event) {
   event.target.remove();
@@ -61,8 +53,6 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
-
-// requisito 2 adiciona ao carrinho
 
 const toCart = async (id) => {
   const list = document.querySelector('.cart__items');
@@ -79,13 +69,9 @@ const toCart = async (id) => {
   }
 };
 
-// requisito 7 remove loading
-
 const endLoading = () => {
   document.querySelector('.load').remove();
 };
-
-// requisito 1 lista produtos
 
 const listItems = async (item) => {
   const items = document.querySelector('.items');
@@ -105,8 +91,6 @@ const listItems = async (item) => {
   }
 };
 
-// requisito 1 chama api com computador e lista itens chamando a função listitems
-
 const request = async () => {
   try {
     const response = await fetch('https://api.mercadolibre.com/sites/MLB/search?q=computador');
@@ -117,15 +101,11 @@ const request = async () => {
   }
 };
 
-// requisito 4 carrega do local storage e adiciona listener aos itens
-
 const startingPage = () => {
   document.querySelector('ol').innerHTML = localStorage.getItem('cart');
   document.querySelectorAll('li')
   .forEach((element) => element.addEventListener('click', cartItemClickListener));
 };
-
-// requisito 6 limpa carrinho
 
 const clearCart = () => {
   const clear = document.querySelector('.empty-cart');
@@ -143,8 +123,3 @@ window.onload = () => {
   printSum();
   clearCart();
 };
-
-// repositórios que me ajudaram na realização do projeto:
-// https://github.com/tryber/sd-015-a-project-shopping-cart/pull/94/files
-// https://github.com/tryber/sd-015-a-project-shopping-cart/pull/99/files
-// https://github.com/tryber/sd-015-a-project-shopping-cart/pull/71/files
